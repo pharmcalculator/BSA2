@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BSA Calculator</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        .calculator-container {
+            width: 400px;
+            padding: 20px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+
+        .result-box {
+            background-color: lightblue;
+            padding: 10px;
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+        .input-label {
+            font-size: 24px;
+        }
+
+        .calculate-button {
+            font-size: 24px;
+            font-weight: bold;
+            background-color: blue;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .calculate-button:hover {
+            background-color: darkblue;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <h1>BSA Calculator</h1>
+        <label for="system" class="input-label">System:</label>
+        <select id="system" style="font-size: 24px;" onchange="updateUnits()">
+            <option value="metric">Metric</option>
+            <option value="imperial">Imperial</option>
+        </select><br><br>
+        <label for="weight" class="input-label">Weight:</label>
+        <input type="number" id="weight" style="font-size: 24px;" required><span id="weight-unit" style="font-size: 24px;"></span><br><br>
+        <label for="height" class="input-label">Height:</label>
+        <input type="number" id="height" style="font-size: 24px;" required><span id="height-unit" style="font-size: 24px;"></span><br><br>
+        <button onclick="calculateBSA()" class="calculate-button">Calculate</button><br><br>
+        <div id="result" class="result-box"></div>
+    </div>
+
+    <script>
+        function updateUnits() {
+            const system = document.getElementById("system").value;
+            const weightUnitElement = document.getElementById("weight-unit");
+            const heightUnitElement = document.getElementById("height-unit");
+
+            if (system === "metric") {
+                weightUnitElement.innerHTML = " kg";
+                heightUnitElement.innerHTML = " cm";
+            } else if (system === "imperial") {
+                weightUnitElement.innerHTML = " lb";
+                heightUnitElement.innerHTML = " in";
+            }
+        }
+
+        function calculateBSA() {
+            const system = document.getElementById("system").value;
+            const weight = parseFloat(document.getElementById("weight").value);
+            const height = parseFloat(document.getElementById("height").value);
+
+            if (isNaN(weight) || isNaN(height)) {
+                alert("Please enter valid numeric values.");
+                return;
+            }
+
+            let bsa;
+
+            if (system === "metric") {
+                bsa = Math.sqrt(weight * height / 3600);
+            } else if (system === "imperial") {
+                bsa = Math.sqrt(weight * height / 3131);
+            }
+
+            const roundedBSA = bsa.toFixed(2);
+
+            const resultElement = document.getElementById("result");
+            resultElement.innerHTML = "<strong>Body Surface Area: " + roundedBSA + " m<sup>2</sup></strong>";
+        }
+
+        // Set default units
+        updateUnits();
+    </script>
+</body>
+</html>
